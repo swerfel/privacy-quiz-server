@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "rm -fR dist/client && npm run tsc && cp -R client dist && node dist/server.js",
+    "start": "rm -fR dist/client && cp -R client dist && node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "postinstall": "npm run tsc"
