@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && rm -R dist/client && cp -R client dist && node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "rm -R dist/client && npm run tsc && cp -R client dist && node dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc"
   },
   "author": "",
   "license": "ISC",
