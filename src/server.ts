@@ -269,6 +269,9 @@ setInterval(sendUpdateToAllSockets, 1000);
 //////////////// Server setup
 const PORT = process.env.PORT || 3001;
 
-app.use(express.static(__dirname+'/build'));
+app.use(express.static(__dirname+'/../client'));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/../client/index.html');
+});
 
 httpServer.listen(PORT, () => console.log('listening on port ' + PORT));
