@@ -8,7 +8,7 @@
     "loadClient": "rm -fR client && cp -R ../privacy-quiz/build . && mv build client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "postinstall": "rm -fR dist/client && cp -R client dist/client && tsc"
+    "postinstall": "tsc && rm -fR dist/client && cp -R client dist/client"
   },
   "author": "",
   "license": "ISC",
