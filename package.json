@@ -8,7 +8,7 @@
     "loadClient": "rm -fR client && cp -R ../privacy-quiz/build . && mv build client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "postinstall": "npm run tsc"
+    "postinstall": "rm -fR dist/client && cp -R client dist && tsc"
   },
   "author": "",
   "license": "ISC",
