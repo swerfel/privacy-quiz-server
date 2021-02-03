@@ -78,7 +78,6 @@ class Statistics {
       if (bucket === BUCKET_COUNT)
         bucket = BUCKET_COUNT-1; // put the single value of 100% in the last category e.g. for buckets of 10: 90 <= e < 100;
       this.estimates[bucket]++;
-      console.log(estimate + " => " + bucket + " => "+ this.estimates)
     }
   }
 
@@ -121,19 +120,25 @@ function nextQuestion(){
     if (currentRoundIndex >= 0)
       finalizeCurrentQuestion();
     currentRoundIndex++;
+    console.log("switching to question "+currentRoundIndex);
   }
   if (currentRoundIndex < TOTAL_ROUNDS) {
     questions.push(new Question(currentRoundIndex, rawQuestions[currentRoundIndex]));
     statistics.push(new Statistics(currentRoundIndex));
   }
-  console.log("switching to question "+currentRoundIndex);
   dirty = true;
   sendUpdateToAllSockets();
 }
 
 function finalizeCurrentQuestion(){
   questions[currentRoundIndex].isActive = false;
-  Object.values(players).forEach(computeScore);
+  Object.values(players).forEach(finalizeCurrentQuestionForPlayer);
+}
+
+function finalizeCurrentQuestionForPlayer(player: Player) {
+  computeScore(player);
+  if (player.statistics.length != statistics.length)
+    player.statistics = statistics.slice();
 }
 
 function computeDifference(player: Player, questionIndex: number) {
@@ -209,23 +214,30 @@ function isEstimateValid(answerObj: Answer) {
   return true;
 }
 
+function isAdmin(player: Player) {
+  return player.name === "Sergej";
+}
+
 io.on("connection", (socket: Socket) => {
   console.log("client connected " + socket.id);
-  players[socket.id] = new Player(socket);
+  var player = new Player(socket);
+  players[socket.id] = player;
   socket.emit("questions", questions);
-  if (players[socket.id].scoredEstimates < currentRoundIndex) {
+  if (player.scoredEstimates < currentRoundIndex) {
     var score = 0;
     for(var i=0; i < currentRoundIndex; i++) {
-      score += computeDifference(players[socket.id], i);
+      score += computeDifference(player, i);
     }
-    players[socket.id].scoredEstimates = currentRoundIndex+1;
-    players[socket.id].score = score;
+    player.scoredEstimates = currentRoundIndex+1;
+    player.score = score;
   }
+  player.statistics = statistics.slice(0, currentRoundIndex);
   dirty=true;
 
   socket.on("disconnect", _reason => {
     disconnectedPlayers[socket.id] = players[socket.id];
     delete players[socket.id];
+    console.log("player dicsonnected "+socket.id);
   })
 
   socket.on("answer", a => {
@@ -261,17 +273,23 @@ io.on("connection", (socket: Socket) => {
     var player = players[socket.id];
     player.name = name;
     dirty = true;
-    if (name === "Sergej")
+    if (isAdmin(player))
       socket.emit("you are admin");
   })
 
-  socket.on("restore by id", id => {
+  socket.on("restore player by id", id => {
     if (id) {
-      var old = disconnectedPlayers[id];
+      var old: Player = disconnectedPlayers[id];
       if (old) {
+        console.log("restoring old player "+old.name);
         old.socket = socket;
         players[socket.id] = old;
         dirty = true;
+        sendUpdatesToSocket(players[socket.id]);
+        if (isAdmin(players[socket.id]))
+          socket.emit("you are admin");
+      } else {
+        socket.emit("restore player not possible")
       }
     }
   })
