@@ -12,13 +12,13 @@ const io = new Server(httpServer);
 // QUESTIONS
 
 const rawQuestions = [
-  'Hast du schon mal im Büro geschlafen?',
-  'Hast du schon mal bei andrena geduscht?',
-  'Hast du schon mal eine Spülmaschine nicht ausgeräumt, obwohl du dafür die Zeit gehabt hättest?',
-  'Hast du schon mal ein privates Packet zu andrena bestellt?',
-  'Hast du schon mal dein Essen im Kühlschrank vergessen?',
-  'Hast du schon mal beim Kickern gemogelt?',
-  'Hast du schon mal einen Arbeitstag mit einem Bier/Wein begonnen?',
+  'Hast du schon mehr als 2 andrena Standorte gesehen?',
+  'Hast du seit Mai 2020 mehr als 5 ganze Tage im Büro gearbeitet?',
+  'Hast du schon mal ein Meeting auf laut gestellt und was anderes gemacht?',
+  'Hast du schon mal mehr als 50% eines Arbeitstages vom Sofa aus gearbeitet?',
+  'Trägst du im Allgemeinen im Home Office eine Jogginghose (oder vergleichbares)?',
+  'Hast du schon mal in Schlafkleidung gearbeitet?',
+  'Duschst du im Home Office seltener als vorher?',
   'Bist du schon mal einem Meeting auf dem Klo gefolgt?',
 ];
 const TOTAL_ROUNDS = rawQuestions.length;
