@@ -16,7 +16,7 @@ pipeline {
   stages {
     stage('Build Docker Image') {
         steps {
-            sh "npm postinstall"
+            sh "npm run postinstall"
             sh "docker build -t 80.86.165.30:5000/privacy:prod --target prod ."
         }
     }
