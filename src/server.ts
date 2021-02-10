@@ -223,6 +223,7 @@ io.on("connection", (socket: Socket) => {
   var player = new Player(socket);
   players[socket.id] = player;
   socket.emit("questions", questions);
+
   if (player.scoredEstimates < currentRoundIndex) {
     var score = 0;
     for(var i=0; i < currentRoundIndex; i++) {
