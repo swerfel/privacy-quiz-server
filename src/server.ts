@@ -9,8 +9,6 @@ app.use(cors());
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-// QUESTIONS
-
 const rawQuestions = [
   'Hast du schon mehr als 2 andrena Standorte gesehen?',
   'Hast du seit Mai 2020 mehr als 5 ganze Tage im Büro gearbeitet?',
