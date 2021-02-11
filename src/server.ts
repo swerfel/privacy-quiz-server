@@ -142,7 +142,7 @@ function finalizeCurrentQuestionForPlayer(player: Player) {
 function computeDifference(player: Player, questionIndex: number) {
   var realValue = statistics[questionIndex].percentage;
   var estimate = player.answers[questionIndex].estimate;
-  if (!estimate) {
+  if (!estimate && estimate !== 0) {
     estimate = (realValue < 50)? 100: 0;
   }
   return  Math.abs(realValue - estimate);
